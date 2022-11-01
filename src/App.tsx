@@ -69,20 +69,27 @@ function App() {
 
     const processedTime = convertMsToTime(time);
 
+    const timeContainerClasses = clsx({
+        "flex flex-grow items-center duration-200 transition-colors justify-center":
+            true,
+        "bg-indigo-100": processedTime.seconds % 2 === 0,
+        "bg-blue-100": processedTime.seconds % 2 !== 0,
+    });
+
+    const stopwatchToggleClasses = clsx({
+        "w-full p-4 h-14 text-center transition-colors duration-300 rounded-3xl":
+            true,
+        "text-indigo-500 bg-indigo-200 border border-gray-500": isRunning,
+        "text-white bg-indigo-500 hover:bg-indigo-600": !isRunning,
+    });
+
     return (
         <div className="h-screen w-full flex flex-col">
             <header className="bg-indigo-500 h-16 flex justify-center items-center text-white">
                 Stopwatch
             </header>
             <main className="flex flex-col flex-grow">
-                <section
-                    className={clsx({
-                        "flex flex-grow items-center duration-200 transition-colors justify-center":
-                            true,
-                        "bg-indigo-100": processedTime.seconds % 2 === 0,
-                        "bg-blue-100": processedTime.seconds % 2 !== 0,
-                    })}
-                >
+                <section className={timeContainerClasses}>
                     <div className="flex items-center space-x-4 tabular-nums">
                         <TimeUnitDisplay
                             time={processedTime.minutes}
@@ -106,11 +113,7 @@ function App() {
                 </section>
                 <section className="px-8 py-12">
                     <button
-                        className={`w-full p-4 h-14 text-center ${
-                            isRunning
-                                ? "text-indigo-500 bg-indigo-200 border border-gray-500"
-                                : "text-white bg-indigo-500 hover:bg-indigo-600"
-                        } transition-colors duration-300 rounded-3xl`}
+                        className={stopwatchToggleClasses}
                         onClick={toggleRunningState}
                     >
                         {isRunning ? "Stop" : "Start"}
